@@ -1,0 +1,108 @@
+
+sparkprovider:
+  nfs:
+    storageClassName: nfs 
+  spark:
+    additionalVolumes:
+     - name: spark-secret
+       secret:
+         secretName: spark-gcp
+         items:
+           - key: spark-gcs-ontime
+             path: spark-gcs-ontime.json
+           - key: spark-gcs-user
+             path: spark-gcs-user.json
+    additionalVolumeMounts:
+     - name: spark-secret
+       mountPath: /spark-secret
+
+
+imagePullSecretsw:
+  - avreadonly
+  - actian-registrykey
+hadoopNameNode:
+  replicaCount: 1
+  # image:
+  #   pullPolicy: Always
+  updateStrategy: RollingUpdate
+  podAnnotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+
+encryption:
+  enabled: false
+  passphraseSecret: vectorh-ear
+
+vectorhLeader:
+  replicaCount: 1
+  # image:
+  #   pullPolicy: Always
+  updateStrategy: RollingUpdate
+  # tolerations:
+  #  - effect: NoExecute
+  #    key: dedicated
+  #    value: vectorh
+#  securityContext:
+#    privileged: true
+#    runAsNonRoot: false
+  #  capabilities:
+  #    add:
+  #    - SYS_PTRACE
+  #    - SYS_ADMIN
+  podAnnotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+  failOnError: false
+  sshServerEnabled: true
+
+postStart: |
+  echo "###"
+  echo "### postStart.sh Script"
+  echo "###"
+  ls -l > /tmp/ls.out
+
+
+
+vectorhWorker:
+  # image:
+  #   pullPolicy: Always
+  replicaCount: 2
+  # tolerations:
+  #  - effect: NoExecute
+  #    key: dedicated
+  #    value: vectorh
+  securityContext:
+    runAsNonRoot: true
+    privileged: false
+  podAnnotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+
+persistentVolumes:
+  enabled: true
+
+cloudStorage:
+  enabled: false
+
+# NFS Storage
+nfsStorage:
+  storageClass: nfs 
+  storageAnnotations:
+    nfs.io/storage-path: #some uniq string
+
+
+networkPolicy:
+  enabled: false
+vectorh:
+  networkPolicy:
+    enabled: false
+
+vectorhUsername: "dbuser"
+vectorhPassword: "AvGKE123"
+vectorhAdminGroup: "dbadmingrp"
+vectorhAdminProfile: "dbadminprofile"
+
+
+preStart: |
+  echo "###"
+  echo "### preStart.sh Script"
+  echo "###"
+  whoami > /tmp/whoami.out
+

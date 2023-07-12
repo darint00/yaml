@@ -1,0 +1,27 @@
+###
+### Descrption:  
+### demo-srv-1.yaml and demo-srv-2.yaml are used to install the otel
+### product in 2 steps.
+### Step 1:  Installs the otel agent
+### Step 2:  Installs the otel collector/prometheus/grafana
+### This file represents Step 1 
+###      helm install otel2 $YAML/otel/demo-srv-2.yaml 
+
+otel_agent:
+  enabled: false
+
+otel_collector:
+  enabled: true 
+
+otel_prometheus:
+  enabled: true 
+  service:
+    type: LoadBalancer 
+    port: 9090 
+
+otel_grafana:
+  enabled: true 
+  service:
+    type: LoadBalancer 
+    port: 3000 
+

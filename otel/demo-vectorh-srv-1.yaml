@@ -1,0 +1,37 @@
+###
+### Descrption:  
+### demo-srv-1.yaml and demo-srv-2.yaml are used to install the otel
+### product in 2 steps.
+### Step 1:  Installs the otel agent
+### Step 2:  Installs the otel collector/prometheus/grafana
+### This file represents Step 1 
+###      helm install otel1 $YAML/otel/demo-srv-1.yaml 
+
+imagePullSecrets:
+  - name: avreadonly
+enableEmaSecurity: false
+
+otel_agent:
+  enabled: true
+  image:
+    pullPolicy: Always 
+  config:
+    ema:
+      endpoint: http://vectorh-leader-0:43036/v1
+    otel:
+      endpoint: http://otel2-actian-otel-collector-service:4317
+    attribute_map:
+      node_name:
+          "vectorh-leader-0.vectorh-leader.helm-testing.svc.cluster.local": "Leader"
+          "vectorh-worker-0.vectorh-worker.helm-testing.svc.cluster.local": "Worker-0"
+          "vectorh-worker-1.vectorh-worker.helm-testing.svc.cluster.local": "Worker-1"
+
+otel_collector:
+  enabled: false 
+
+otel_prometheus:
+  enabled: false 
+
+otel_grafana:
+  enabled: false 
+

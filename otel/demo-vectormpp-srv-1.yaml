@@ -1,16 +1,25 @@
-### Installed in helm-testing namespace.  IE.  node name mappings
 ###
+### Descrption:  
+### demo-srv-1.yaml and demo-srv-2.yaml are used to install the otel
+### product in 2 steps.
+### Step 1:  Installs the otel agent
+### Step 2:  Installs the otel collector/prometheus/grafana
+### This file represents Step 1 
+###      helm install otel1 $YAML/otel/demo-srv-1.yaml 
 
 imagePullSecrets:
   - name: avreadonly
 enableEmaSecurity: false
 
 otel_agent:
+  enabled: true
   image:
-    pullPolicy: Always
+    pullPolicy: Always 
   config:
     ema:
       endpoint: http://vectormpp-vectorh-leader-0:43036/v1
+    otel:
+      endpoint: http://otel2-actian-otel-collector-service:4317
     attribute_map:
       node_name:
           "vectormpp-vectorh-leader-0.vectormpp-vectorh-leader.helm-testing.svc.cluster.local": "Leader"
@@ -18,19 +27,11 @@ otel_agent:
           "vectormpp-vectorh-worker-1.vectormpp-vectorh-worker.helm-testing.svc.cluster.local": "Worker-1"
 
 otel_collector:
-  image:
-    pullPolicy: Always
-  enabled: true 
+  enabled: false 
 
 otel_prometheus:
-  enabled: true 
-  service:
-    type: LoadBalancer 
-    port: 9090
+  enabled: false 
 
 otel_grafana:
-  enabled: true 
-  service:
-    type: LoadBalancer 
-    port: 3000 
+  enabled: false 
 

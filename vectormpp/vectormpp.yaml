@@ -19,7 +19,7 @@ sparkprovider:
 
 imagePullSecrets:
   - avreadonly
-  - actian-registrykey
+  #- actian-registrykey
 hadoopNameNode:
   replicaCount: 1
   # image:

@@ -17,7 +17,7 @@ sparkprovider:
        mountPath: /spark-secret
 
 
-imagePullSecretsw:
+imagePullSecrets:
   - avreadonly
   - actian-registrykey
 hadoopNameNode:

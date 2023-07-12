@@ -1,0 +1,34 @@
+### Installed in helm-testing namespace.  IE.  node name mappings
+###
+
+imagePullSecrets:
+  - name: avreadonly
+enableEmaSecurity: false
+
+otel_agent:
+  image:
+    pullPolicy: Always
+  config:
+    ema:
+      endpoint: http://vectormpp-vectorh-leader-0:43036/v1
+    attribute_map:
+      node_name:
+          "vectormpp-vectorh-leader-0.vectormpp-vectorh-leader.helm-testing.svc.cluster.local": "Leader"
+          "vectormpp-vectorh-worker-0.vectormpp-vectorh-worker.helm-testing.svc.cluster.local": "Worker-0"
+          "vectormpp-vectorh-worker-1.vectormpp-vectorh-worker.helm-testing.svc.cluster.local": "Worker-1"
+
+otel_collector:
+  image:
+    pullPolicy: Always
+  enabled: true 
+
+otel_prometheus:
+  enabled: true 
+  service:
+    port: 9090
+
+otel_grafana:
+  enabled: true 
+  service:
+    port: 3000 
+
